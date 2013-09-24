@@ -1,0 +1,184 @@
+<?php
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of TextExtract
+ *
+ * @author peter
+ */
+class TextExtract {
+    //put your code here
+
+    /**
+     * Basic function to take a line of text and convert it into a basic array of words.
+     * 
+     * @param type $line
+     * @return type
+     */
+    static public function makeWords($line)
+    {
+        $words = explode(' ', $line);
+
+        return $words;
+    }
+
+    /**
+     * 
+     * Only return the capital letters on the provided string
+     * 
+     * @param string $line
+     * @return string type
+     */
+    public static function capitals($line)
+    {
+        return preg_replace('/[^A-Z]/', '', $line);
+    }
+
+    /**
+     * 
+     * Find all the first letters of words in the provided string.
+     * 
+     * Optionally return the whole lot as a capitalized string
+     * 
+     * @param string $line
+     * @param boolean $cap
+     * @return string
+     */
+    public static function firstLetters($line, $cap = true)
+    {
+
+        $array = array();
+
+        preg_match_all("/(\S)\S*/i", $line, $array, PREG_PATTERN_ORDER);
+
+        $return = '';
+
+        if (isset($array[1]))
+        {
+            $return = implode('', $array[1]);
+        }
+
+        if ($cap)
+        {
+            $return = strtoupper($return); // sometimes we want to capitalize the string to simplification
+        }
+        return $return;
+    }
+
+  
+    /**
+     * A simple function to test for brackets nicely, as they were causing problems in the original system
+     * 
+     * 
+     * @param type $chr
+     * @return boolean
+     */
+    public static function removeParens($chr)
+    {
+        if ($chr == '[' or $chr == ']')
+        {
+            return false;
+        }
+
+        if ($chr == '(' or $chr == ')')
+        {
+            return false;
+        }
+
+        return true;
+    }
+    
+    
+    public static function characterFrequency($string, $keep_case = true, $include_space = false, $include_punction = false)
+    {
+        $count_array = self::characterCountDetails($string);
+        $second_array = array(); // saves getting lost - not memory ideal though
+        
+        
+        // now we need to process it
+        
+        if( $keep_caps == false )
+        {
+            foreach($count_array as $_chr => $_cnt)
+            {
+                if( ! isset($second_array[strtoupper($_chr)]))
+                {
+                    $second_array[strtoupper($_chr)] = 0;
+                }
+                
+                $second_array[strtoupper($_chr)] = $second_array[strtoupper($_chr)] + $_cnt;
+            }
+        }
+        else
+        {
+            $second_array = $count_array;
+        }
+        
+    }
+    
+    
+    /**
+     * 
+     * 
+     * give the full character count of a string
+     * 
+     * @param string $string
+     * @return array
+     */
+    public static function characterCountDetails($string)
+    {
+        $count_array = self::count_chars_unicode($string, true);
+        
+        return $count_array;
+    }
+    
+    
+    /**
+     * 
+     * just return the actual character count without any details, i,e: unique characters.
+     * 
+     * @param type $string
+     * @return int
+     */
+    public static function characterCount($string)
+    {
+       return self::count_chars_unicode($string, false);
+    }
+    
+    
+    
+    
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    //
+    // Some general utility functions for now.
+    //
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    
+    /**
+     * 
+     * same as char_count but handles unicode.
+     * 
+     * @param type $str
+     * @param type $x
+     * @return type
+     */
+    public static function count_chars_unicode($str, $x = false)
+    {
+        $tmp = preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY);
+        foreach ($tmp as $c)
+        {
+            $chr[$c] = isset($chr[$c]) ? $chr[$c] + 1 : 1;
+        }
+        return is_bool($x) ? ($x ? $chr : count($chr)) : $chr[$x];
+    }
+
+    
+
+}
+
