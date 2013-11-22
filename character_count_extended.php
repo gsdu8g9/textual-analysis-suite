@@ -62,10 +62,7 @@ foreach ($files as $file)
             {
                 $verse = $matches [1];
 
-                // http://php.net/manual/en/function.count-chars.php
-//                $_tmp_count [$verse] = count_chars($matches [2]);
-//                echo $matches [2] ."\n";
-//                echo print_r(count_chars_unicode($matches [2]), true) . "\n";exit;
+
                 $_tmp_count [$verse] =  count_chars_unicode($matches [2], true);
             }
         }
