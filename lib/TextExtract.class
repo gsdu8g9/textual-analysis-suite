@@ -98,25 +98,34 @@ class TextExtract {
         $count_array = self::characterCountDetails($string);
         $second_array = array(); // saves getting lost - not memory ideal though
         
+	$second_array['chars'] = array();
+	$second_array['total'] = 0;
         
         // now we need to process it
         
-        if( $keep_caps == false )
+        if( $keep_case == false )
         {
             foreach($count_array as $_chr => $_cnt)
             {
-                if( ! isset($second_array[strtoupper($_chr)]))
-                {
-                    $second_array[strtoupper($_chr)] = 0;
-                }
+	      if( preg_match('/[A-Za-z]/', strtoupper($_chr)) )
+		{
+
+		  if( ! isset($second_array['chars'][strtoupper($_chr)]))
+		    {
+		      $second_array['chars'][strtoupper($_chr)] = 0;
+		    }
                 
-                $second_array[strtoupper($_chr)] = $second_array[strtoupper($_chr)] + $_cnt;
+		  $second_array['chars'][strtoupper($_chr)] = $second_array['chars'][strtoupper($_chr)]   + $_cnt;
+		  $second_array['total'] = $second_array['total'] + $_cnt;
+		}
             }
         }
         else
         {
             $second_array = $count_array;
         }
+
+	return $second_array;
         
     }
     
