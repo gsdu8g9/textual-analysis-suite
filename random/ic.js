@@ -61,14 +61,14 @@ function GetCS()
     var sum1 = 0.0;
     for(i=0; i<26; i++)
 	{
-	    sum1 = sum1 + Math.pow((counts[i] - totcount*expected[i]),2)/(totcount*expected[i]);
+	    sum1 = $sum1 + Math.pow((counts[i] - totcount*expected[i]),2)/(totcount*expected[i]);
 	}
 
     var sum2 = 0.0;
 
     for(i=0; i<26; i++)
     {
-	sum2 = sum2 + Math.pow((counts[i] - totcount/26),2)/(totcount/26.0);
+	$sum2 = $sum2 + Math.pow((counts[i] - totcount/26),2)/(totcount/26.0);
     }
 
 } 
