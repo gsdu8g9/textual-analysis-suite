@@ -8,19 +8,22 @@ define('HTML', true);
 define('THRESHHOLD', 6);
 
 
+
 $files = array();
 
 if ($handle = opendir(INPUT))
-{
-    while (false !== ($entry = readdir($handle)))
     {
-        if ($entry != "." && $entry != ".." and preg_match('/lxv-1-clean/', $entry))
-        {
-            $files [] = $entry;
-        }
+        while (false !== ($entry = readdir($handle)))
+            {
+                if ($entry != "." && $entry != ".." and preg_match('/lxv-1-clean/', $entry))
+                    {
+                        $files [] = $entry;
+                    }
+            }
+
+        closedir($handle);
+
     }
-    closedir($handle);
-}
 
 asort($files);
 
@@ -32,22 +35,22 @@ $lxv_string = '';
 
  **/
 foreach ($files as $file)
-{
-    $line_ar = file(INPUT . '/' . $file);
-
-    foreach ($line_ar as $line)
     {
-        $line = trim($line);
+        $line_ar = file(INPUT . '/' . $file);
 
-        if (preg_match('/^([A-Z]+:[A-Z0]+:\d+)\.\s+(.+)/', $line, $matches))
-        {
-            if (isset($matches [1]) and isset($matches [2]))
+        foreach ($line_ar as $line)
             {
-	      $lxv_string = $lxv_string . $matches[2];
+                $line = trim($line);
+
+                if (preg_match('/^([A-Z]+:[A-Z0]+:\d+)\.\s+(.+)/', $line, $matches))
+                    {
+                        if (isset($matches [1]) and isset($matches [2]))
+                            {
+                                $lxv_string = $lxv_string . $matches[2];
+                            }
+                    }
             }
-        }
     }
-}
 
 
 $string = TextExtract::firstLetters($lxv_string, true);
